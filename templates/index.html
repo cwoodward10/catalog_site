@@ -1,0 +1,35 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div class = 'flash'>
+		  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+
+<div>
+  {% if space_types %}
+    <a href="{{url_for('allSpaces')}}">
+      <h4>All</h4>
+    </a>
+    {% for space_type in space_types %}
+    <a href="{{url_for('spaceTypeView', space_name = space_type.name)}}">
+      <h4>{{ space_type.name }}</h4>
+    </a>
+    {% endfor %}
+  {% else %}
+    <h4>No space types are available.</h4>
+  {% endif %}
+  <a href="{{url_for('createSpaceType')}}">
+    <h4>Create New</h4>
+  </a>
+</div>
+
+{% endblock %}

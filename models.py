@@ -14,7 +14,7 @@ class User(Base):
     picture = Column(String(250))
 
 class SpaceType(Base):
-    __tablename__ = 'type of space'
+    __tablename__ = 'spacetype'
 
     name = Column(String(250),
                     nullable = False,
@@ -32,7 +32,7 @@ class SpaceType(Base):
             'description': self.description,
         }
 
-class spaceItem(Base):
+class SpaceItem(Base):
     __tablename__ = 'space'
 
     id = Column(Integer, primary_key = True)
@@ -41,7 +41,7 @@ class spaceItem(Base):
     year_built = Column(String(8))
     program = Column(String(250))
     space_type = Column(Integer,
-                        ForeignKey('type of space.name'))
+                        ForeignKey('spacetype.name'))
     space = relationship(SpaceType)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
