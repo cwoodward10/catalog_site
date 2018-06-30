@@ -47,7 +47,10 @@ def allSpaces():
 def spaceTypeView(space_type):
     spaces = session.query(SpaceProject).filter_by(space_type =
                                                     space_type).all()
-    return render_template('spacetype_specific.html', spaces = spaces)
+    spaceType = session.query(SpaceType).filter_by(name = space_type).one()
+    return render_template('spacetype_specific.html',
+                            spaces = spaces,
+                            spaceType = spaceType)
 
 @app.route('/spaces/create', methods = ['GET', 'POST'])
 def createSpaceType():
@@ -67,21 +70,60 @@ def createSpaceType():
     else:
         return render_template('spacetype_new.html')
 
-@app.route('/spaces/<string:space_type>/edit')
+@app.route('/spaces/<string:space_type>/edit', methods=['GET', 'POST'])
 def editSpaceType(space_type):
-    return "Here is the page to edit {}'s information".format(space_type)
+    editted_space = session.query(SpaceType).filter_by(name = space_type).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editted_space.name = request.form['name']
+        if request.form['description']:
+            editted_space.description = request.form['description']
+        try:
+            session.add(editted_space)
+            session.commit()
+            flash('Success: {} has been editted'.format(editted_space.name))
+            return redirect(url_for('spaceTypeView', space_type = space_type))
+        except:
+            session.rollback()
+            flash('Failed to create a new type of space.')
+            return render_template('spacetype_edit.html',
+                                    space = editted_space)
+    else:
+        return render_template('spacetype_edit.html',
+                                space = editted_space)
 
-@app.route('/spaces/<string:space_type>/delete')
+@app.route('/spaces/<string:space_type>/delete', methods=['GET', 'POST'])
 def deleteSpaceType(space_type):
-    return "Here is the page to delete {}'s information".format(space_type)
+    deleted_space = session.query(SpaceType).filter_by(name = space_type).one()
+    if request.method == 'POST':
+        try:
+            session.delete(deleted_space)
+            name = deleted_space.name
+            session.commit()
+            flash('Successfully deleted {}'.format(name))
+            return redirect(url_for('spacesIndex'))
+        except:
+            session.rollback()
+            flash('There was a problem in deleting the project')
+            return render_template('spacetype_delete.html',
+                                    spaceType = deleted_space)
+    else:
+        return render_template('spacetype_delete.html',
+                                spaceType = deleted_space)
 
 @app.route('/spaces/<string:space_type>/<int:space_id>/')
 def spaceProjectView(space_id, space_type):
     space = session.query(SpaceProject).filter_by(id = space_id).one()
     return render_template('project_specific.html', space = space)
 
-@app.route('/spaces/create/project', methods = ['GET', 'POST'])
-def createSpaceProject():
+@app.route('/spaces/all/create', methods = ['GET', 'POST'])
+@app.route('/spaces/<string:space_type>/create', methods = ['GET', 'POST'])
+def createSpaceProject(space_type = None):
+        if space_type != None:
+            space = session.query(SpaceType).filter_by(name = space_type).one()
+        else:
+            space = None
+        space_types = session.query(SpaceType).all()
         if request.method == 'POST':
             newProject = SpaceProject(name = request.form['name'],
                                 design_team  = request.form['design_team'],
@@ -98,20 +140,70 @@ def createSpaceProject():
             except:
                 session.rollback()
                 flash('Failed to create a new project.')
-                space_types = session.query(SpaceType).all()
-                return render_template('project_new.html', space_types = space_types)
+                return render_template('project_new.html',
+                                        space_types = space_types,
+                                        space = space)
 
         else:
-            space_types = session.query(SpaceType)
-            return render_template('project_new.html', space_types = space_types)
+            return render_template('project_new.html',
+                                    space_types = space_types,
+                                    space = space)
 
-@app.route('/spaces/<string:space_type>/<string:space_id>/edit')
+@app.route('/spaces/<string:space_type>/<string:space_id>/edit'
+            , methods=['GET', 'POST'])
 def editSpaceProject(space_type, space_id):
-    return "Landing page for editing {}".format(space_id)
+    editted_proj = session.query(SpaceProject).filter_by(id = space_id).one()
+    space_types = session.query(SpaceType).order_by(asc(SpaceType.name)).all()
+    if request.method == 'POST':
+        if request.form['name']:
+            editted_proj.name = request.form['name']
+        if request.form['design_team']:
+            editted_proj.design_team = request.form['design_team']
+        if request.form['year_built']:
+            editted_proj.year_built = request.form['year_built']
+        if request.form['program']:
+            editted_proj.program = request.form['program']
+        if request.form['space_type']:
+            editted_proj.space_type = request.form['space_type']
+            space_type_new = editted_proj.space_type
 
-@app.route('/spaces/<string:space_type>/<string:space_id>/delete')
+        try:
+            session.add(editted_proj)
+            session.commit()
+            flash('Success: {} has been editted'.format(editted_proj.name))
+            return redirect(url_for('spaceProjectView',
+                                    space_type = space_type,
+                                    space_id = space_id))
+        except:
+            session.rollback()
+            flash('Failed to create a new type of space.')
+            return render_template('project_edit.html',
+                                    project = editted_proj,
+                                    space_types = space_types)
+    else:
+        return render_template('project_edit.html',
+                                project = editted_proj,
+                                space_types = space_types)
+
+@app.route('/spaces/<string:space_type>/<string:space_id>/delete'
+            , methods=['GET', 'POST'])
 def deleteSpaceProject(space_type, space_id):
-    return "Landing page for deleting {}".format(space_id)
+        deleted_project = session.query(SpaceProject).filter_by(id = space_id).one()
+        if request.method == 'POST':
+            try:
+                session.delete(deleted_project)
+                name = deleted_project.name
+                session.commit()
+                flash('Successfully deleted {}'.format(name))
+                return redirect(url_for('spaceTypeView', space_type = space_type))
+            except:
+                session.rollback()
+                flash('There was a problem in deleting the project')
+                return render_template('project_delete.html',
+                                        space_project = deleted_project)
+        else:
+            return render_template('project_delete.html',
+                                    space_project = deleted_project)
 
 ############################  INITIATE ##########################################
 
