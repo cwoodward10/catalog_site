@@ -3,31 +3,29 @@
 {% include "header.html" %}
 
 <div class = 'flash'>
-		 {% with messages = get_flashed_messages() %}
+		  {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul>
         {% for message in messages %}
           <li> <strong> {{ message }} </strong> </li>
         {% endfor %}
         </ul>
-      {% endif %}
+        {% endif %}
     {% endwith %}
 </div>
 
 <div>
-  {% if space_types %}
-    <a href="{{url_for('allSpaces')}}">
-      <h4>All</h4>
-    </a>
-    {% for space_type in space_types %}
-    <a href="{{url_for('spaceTypeView', space_type = space_type.name)}}">
-      <h4>{{ space_type.name }}</h4>
+  {% if spaces %}
+    {% for space in spaces %}
+    <a href="{{url_for('spaceProjectView', space_type = space.space_type,
+                        space_id = space.id)}}">
+      <h4>{{ space.name }}</h4>
     </a>
     {% endfor %}
   {% else %}
-    <h4>No space types are available.</h4>
+    <h4>No spaces are currentlyavailable. Create one below.</h4>
   {% endif %}
-  <a href="{{url_for('createSpaceType')}}">
+  <a href="{{url_for('createSpaceProject')}}">
     <h4>Create New</h4>
   </a>
 </div>
