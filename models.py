@@ -46,6 +46,17 @@ class SpaceProject(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'design_team': self.design_team,
+            'year_built': self.year_built,
+            'program': self.program,
+            'space_type': self.space_type
+        }
+
 
 engine = create_engine('sqlite:///catalog_db.db')
 Base.metadata.create_all(engine)
