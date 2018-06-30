@@ -1,0 +1,27 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div class = 'flash'>
+		  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+
+<h2> Are you sure you want to delete {{space_project.name}}? </h2>
+
+<form action="#" method = 'post'>
+	<button type="submit">Delete</button>
+</form>
+
+<a href = '{{url_for('spaceProjectView', space_type=space_project.space_type, space_id=space_project.id)}}'>
+	<button>Cancel</button>
+</a>
+
+{% endblock %}

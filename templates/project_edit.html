@@ -1,0 +1,53 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div class = 'flash'>
+		  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+
+<form action="#" method = "POST">
+  <div class="form-group">
+		<div>
+	    <label for="name">Type of Space:</label>
+	    <input type ="text" maxlength="250" name="name" placeholder="{{ project.name }}">
+		</div>
+
+		<div>
+			<label for="design_team">Design Team:</label>
+    	<textarea  maxlength="1000" rows="3" name="design_team" placeholder="{{ project.design_team }}"></textarea>
+		</div>
+
+		<div>
+			<label for="year_built">Year Built:</label>
+    	<textarea  maxlength="1000" rows="3" name="year_built" placeholder="{{ project.year_built }}"></textarea>
+		</div>
+
+		<div>
+			<label for="program">Program:</label>
+    	<textarea  maxlength="1000" rows="3" name="program" placeholder="{{ project.program }}"></textarea>
+		</div>
+
+		<div>
+      <label for="space_type">Space Type:</label>
+      <select name="space_type">
+        {% for space in space_types %}
+        <option value="{{ space.name }}" {% if space.name == project.space_type %}selected{% endif %}>{{ space.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button id="submit" type="submit">
+    <span></span>Create</button>
+  </div>
+</form>
+
+{% endblock %}

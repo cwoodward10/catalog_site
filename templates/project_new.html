@@ -39,9 +39,16 @@
     <div>
       <label for="space_type">Space Type:</label>
       <select name="space_type">
-        {% for space in space_types %}
-        <option value="{{ space.name }}">{{ space.name }}</option>
+			{% if space != None %}
+        {% for space_type in space_types %}
+        <option value="{{ space_type.name }}" {% if space_type.name == space.name %}selected{% endif %}>{{ space_type.name }}</option>
         {% endfor %}
+			{% else %}
+				{% for space_type in space_types %}
+				<option value="{{ space_type.name }}">{{ space_type.name }}</option>
+				{% endfor %}
+			{% endif %}
+
       </select>
     </div>
 

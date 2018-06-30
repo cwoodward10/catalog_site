@@ -15,6 +15,17 @@
 </div>
 
 <div>
+	<h1>{{ spaceType.name }}</h1>
+	<a href="{{url_for('editSpaceType', space_type = spaceType.name)}}">
+		<p>Edit this space</p>
+	</a>
+	<a href="{{url_for('deleteSpaceType', space_type = spaceType.name)}}">
+		<p>Delete this space</p>
+	</a>
+	<p>{{ spaceType.description }}</p>
+</div>
+
+<div>
   {% if spaces %}
     {% for space in spaces %}
     <a href="{{url_for('spaceProjectView', space_type = space.space_type,
@@ -25,7 +36,7 @@
   {% else %}
     <h4>No projects are currently available. Create one below.</h4>
   {% endif %}
-  <a href="{{url_for('createSpaceProject')}}">
+  <a href="{{url_for('createSpaceProject', space_type = spaceType.name)}}">
     <h4>Create New</h4>
   </a>
 </div>
