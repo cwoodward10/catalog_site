@@ -32,7 +32,7 @@ class SpaceType(Base):
             'description': self.description,
         }
 
-class SpaceItem(Base):
+class SpaceProject(Base):
     __tablename__ = 'space'
 
     id = Column(Integer, primary_key = True)
@@ -40,7 +40,7 @@ class SpaceItem(Base):
     design_team = Column(String(1000))
     year_built = Column(String(8))
     program = Column(String(250))
-    space_type = Column(Integer,
+    space_type = Column(String(250),
                         ForeignKey('spacetype.name'))
     space = relationship(SpaceType)
     user_id = Column(Integer, ForeignKey('user.id'))
