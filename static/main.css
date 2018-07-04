@@ -1,0 +1,125 @@
+/* setting to border-box */
+html {
+  box-sizing: border-box;
+}
+.container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto 0 auto;
+}
+
+.main {
+  top:0;
+  justify-content: space-between;
+  width: 90%;
+  margin: 10px auto 10px auto;
+}
+
+.center {
+  align-items: center;
+  text-align: center;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* set up floats */
+.left {
+  float: left;
+}
+
+/* set up divisions */
+hr {
+  display: block;
+  width: 100%;
+  margin: 10px auto 0px auto;
+  padding: 0;
+  border-style: inset;
+  border: 1px solid rgba(0,0,0,0.9);
+}
+
+/* setting up grid */
+.col {
+  float: left;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.one,
+.one-third {
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media only screen and (min-width: 450px) {
+  .one {
+    width: 100%;
+  }
+  .one-third {
+    width: 49%;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .one {
+    width: 100%;
+  }
+  .one-third {
+    width: 32%;
+  }
+}
+
+/* setting up rows */
+.row::before,
+.row::after {
+  display: table;
+  content: " ";
+  clear: both;
+}
+
+/* set up the html element changes */
+a {
+  color: magenta;
+  text-decoration: none;
+}
+a:visited {
+  color: lime;
+}
+
+/* set up the header */
+.main-title {
+  font-size: 3em;
+  margin: 10px 0 10px 0;
+  font-family: monospace;
+  color: black;
+  font-style: normal;
+  text-decoration: none;
+}
+
+a.no-color-change:visited {
+  color: inherit;
+}
+
+.nav-center {
+  width: 80%;
+}
+
+.nav-side {
+  width: 10%;
+  align-self: flex-end;
+}
+
+/* set up the grid body */
+.grid-item {
+  text-align: center;
+  border: 2px solid rgb(0,255,255);
+  border-radius: 15px;
+  background-color: rgba(0,255,255,0.2);
+  height: 10em;
+}
