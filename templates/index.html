@@ -14,22 +14,28 @@
     {% endwith %}
 </div>
 
-<div>
+<section class='main flex'>
   {% if space_types %}
-    <a href="{{url_for('allSpaces')}}">
-      <h4>All</h4>
-    </a>
-    {% for space_type in space_types %}
-    <a href="{{url_for('spaceTypeView', space_type = space_type.name)}}">
-      <h4>{{ space_type.name }}</h4>
-    </a>
-    {% endfor %}
+  <a href="{{url_for('allSpaces')}}" class='col one-third grid-item'>
+    <h4>All</h4>
+  </a>
+
+  {% for space_type in space_types %}
+  <a href="{{url_for('spaceTypeView', space_type = space_type.name)}}" class='col one-third grid-item'>
+    <h4>{{ space_type.name }}</h4>
+  </a>
+  {% endfor %}
+
   {% else %}
-    <h4>No space types are available.</h4>
+  <h4>No space types are available.</h4>
   {% endif %}
-  <a href="{{url_for('createSpaceType')}}">
+
+	{% if login_state == True %}
+  <a href="{{url_for('createSpaceType')}}" class='col one-third grid-item'>
+		<img href={{ url_for('media', filename='createnew.png')}}
     <h4>Create New</h4>
   </a>
-</div>
+	{% endif %}
+</section>
 
 {% endblock %}

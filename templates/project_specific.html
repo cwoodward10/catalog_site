@@ -5,6 +5,7 @@
 <div>
   <h2>{{ space.name }}</h2>
 
+  {% if creator_state == True %}
   <div>
   	<a href="{{url_for('editSpaceProject', space_type = space.space_type, space_id = space.id)}}">
   		<p>Edit this project</p>
@@ -12,6 +13,7 @@
   	<a href="{{url_for('deleteSpaceProject', space_type = space.space_type, space_id = space.id)}}">
   		<p>Delete this project</p>
   	</a>
+  {% endif %}
   </div>
 
 	<div>

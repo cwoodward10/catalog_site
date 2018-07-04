@@ -1,11 +1,25 @@
-<div class="row top-menu">
-	<div class="col-md-6">
-		<a href="{{url_for('spacesIndex')}}">
-			<span class="glyphicon glyphicon-home" aria-hidden="true"></span>Spaces & Places
-		</a>
+<header class="main center">
+	<div class="row flex">
+		<section class='col nav-side'>
+			<span></span>
+		</section>
+
+		<section class='col nav-center'>
+			<a href="{{url_for('spacesIndex')}}" class='no-color-change'>
+				<h1 class='main-title'>Spaces & Places</h1>
+			</a>
+		</section>
+
+		<section class="col nav-side">
+			{% if login_state != True %}
+			<a href = '{{ url_for('spacesLogin') }}' class='no-color-change'>
+				<p>Login</p>
+			</a>
+			{% else %}
+			<a href = '{{ url_for('gdisconnect') }}' class='no-color-change'>
+				<p>Logout</p>
+			</a>
+			{% endif %}
+		</section>
 	</div>
-	<div class="col-md-6 text-right">
-					<p>Login Link will go Here </p>
-		
-	</div>
-</div>
+</header>

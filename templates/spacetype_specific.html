@@ -16,12 +16,14 @@
 
 <div>
 	<h1>{{ spaceType.name }}</h1>
+	{% if creator_state == True %}
 	<a href="{{url_for('editSpaceType', space_type = spaceType.name)}}">
 		<p>Edit this space</p>
 	</a>
 	<a href="{{url_for('deleteSpaceType', space_type = spaceType.name)}}">
 		<p>Delete this space</p>
 	</a>
+	{% endif %}
 	<p>{{ spaceType.description }}</p>
 </div>
 
@@ -36,9 +38,11 @@
   {% else %}
     <h4>No projects are currently available. Create one below.</h4>
   {% endif %}
+	{% if login_state == True %}
   <a href="{{url_for('createSpaceProject', space_type = spaceType.name)}}">
     <h4>Create New</h4>
   </a>
+	{% endif %}
 </div>
 
 {% endblock %}
