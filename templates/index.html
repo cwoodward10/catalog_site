@@ -17,23 +17,28 @@
 <section class='main flex'>
   {% if space_types %}
   <a href="{{url_for('allSpaces')}}" class='col one-third grid-item'>
-    <h4>All</h4>
+		<img src="{{ url_for('static', filename='media/alltypes.jpg')}}" class='item-image'>
+    <h4 class='item-name'>All</h4>
   </a>
 
   {% for space_type in space_types %}
   <a href="{{url_for('spaceTypeView', space_type = space_type.name)}}" class='col one-third grid-item'>
-    <h4>{{ space_type.name }}</h4>
+		<img src="{{ space_type.image_url }}" class='item-image'>
+    <h4 class='item-name'>{{ space_type.name }}</h4>
   </a>
   {% endfor %}
 
   {% else %}
-  <h4>No space types are available.</h4>
+	<article class='col two-thirds grid-item'>
+		<img src="{{ url_for('static', filename='media/emptyland.jpg')}}" class='item-image'>
+  	<h4 class='item-name'>No space types are available.</h4>
+	</article>
   {% endif %}
 
 	{% if login_state == True %}
   <a href="{{url_for('createSpaceType')}}" class='col one-third grid-item'>
-		<img href={{ url_for('media', filename='createnew.png')}}
-    <h4>Create New</h4>
+		<img src="{{ url_for('static', filename='media/createnew.jpg')}}" class='item-image'>
+    <h2 class='item-name'>Create New</h2>
   </a>
 	{% endif %}
 </section>

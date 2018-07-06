@@ -14,20 +14,37 @@
     {% endwith %}
 </div>
 
-<div>
+<section class='main flex'>
+	<article class='one page-header centered'>
+		<article class='row'>
+			<h1 class='page-title'>All Spaces</h1>
+		</article>
+
+		<article class='one'>
+			<p class='page-body'>A comprehensive view of the projects in this database regardless of the type of space that they below to.</p>
+		</article>
+	</article>
+</section>
+
+<section class='main flex'>
   {% if spaces %}
     {% for space in spaces %}
     <a href="{{url_for('spaceProjectView', space_type = space.space_type,
-                        space_id = space.id)}}">
-      <h4>{{ space.name }}</h4>
+                        space_id = space.id)}}" class='col one-third grid-item'>
+			<img src="{{ space.image_url }}" class='item-image'>
+      <h4 class='item-name'>{{ space.name }}</h4>
     </a>
     {% endfor %}
   {% else %}
-    <h4>No spaces are currentlyavailable. Create one below.</h4>
+	<article class='col two-thirds grid-item'>
+		<img src="{{ url_for('static', filename='media/emptyland.jpg')}}" class='item-image'>
+    <h4 class='item-name'>No projects are currently available.</h4>
+	</article>
   {% endif %}
 	{% if login_state == True %}
-  <a href="{{url_for('createSpaceProject')}}">
-    <h4>Create New</h4>
+  <a href="{{url_for('createSpaceProject')}}" class='col one-third grid-item'>
+		<img src="{{ url_for('static', filename='media/createnew.jpg')}}" class='item-image'>
+    <h4 class='item-name'>Create New</h4>
 	{% endif %}
   </a>
 </div>

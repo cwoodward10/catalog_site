@@ -37,6 +37,11 @@
 		</div>
 
 		<div>
+			<label for="image_url">Image URL:</label>
+			<textarea  maxlength="500" rows="3" name="image_url" placeholder="{{ project.image_url }}"></textarea>
+		</div>
+
+		<div>
       <label for="space_type">Space Type:</label>
       <select name="space_type">
         {% for space in space_types %}

@@ -10,7 +10,6 @@ html {
 
 .main {
   top:0;
-  justify-content: space-between;
   width: 90%;
   margin: 10px auto 10px auto;
 }
@@ -42,19 +41,21 @@ hr {
 /* setting up grid */
 .col {
   float: left;
+  margin-top: 10px;
 }
 
 .flex {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
 }
 
 .one,
-.one-third {
+.one-third,
+.two-thirds {
   width: 100%;
-  margin-top: 10px;
+  clear: both;
 }
 
 @media only screen and (min-width: 450px) {
@@ -62,6 +63,9 @@ hr {
     width: 100%;
   }
   .one-third {
+    width: 49%;
+  }
+  .two-thirds {
     width: 49%;
   }
 }
@@ -72,6 +76,9 @@ hr {
   }
   .one-third {
     width: 32%;
+  }
+  .two-thirds {
+    width: 66%;
   }
 }
 
@@ -89,7 +96,11 @@ a {
   text-decoration: none;
 }
 a:visited {
-  color: lime;
+  color: rgb(255, 0, 128);
+}
+
+a.no-color-change:visited {
+  color: inherit;
 }
 
 /* set up the header */
@@ -100,10 +111,6 @@ a:visited {
   color: black;
   font-style: normal;
   text-decoration: none;
-}
-
-a.no-color-change:visited {
-  color: inherit;
 }
 
 .nav-center {
@@ -118,8 +125,53 @@ a.no-color-change:visited {
 /* set up the grid body */
 .grid-item {
   text-align: center;
-  border: 2px solid rgb(0,255,255);
+  border: 2px solid rgb(255, 0, 128);
   border-radius: 15px;
-  background-color: rgba(0,255,255,0.2);
   height: 10em;
+  position: relative;
+  overflow: hidden;
+}
+
+.item-image {
+  object-fit: fill;
+  width: 100%;
+  min-height: 100%;
+  border-radius: 15px 15px 0px 0px;
+  overflow: hidden;
+  opacity: 0.25;
+  background-color: rgba(255, 0, 128, 0.6);
+}
+
+.item-name {
+  display: flex;
+  justify-content: center;
+  margin: 0px auto 10px auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  font-size: 1em;
+}
+
+/* set up the page body */
+.page-header {
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.page-title {
+  font-size: 1.5em;
+  margin: 0 0 10px 0;
+}
+
+.page-body {
+  font-size: 1em;
+  margin: 0 0 10px 0;
+}
+
+.centered {
+  max-width: 50%;
+  text-align: center;
+  margin: 0 auto 0 auto;
 }
