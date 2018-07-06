@@ -21,6 +21,7 @@ class SpaceType(Base):
                     unique = True,
                     primary_key = True)
     description = Column(String(1000))
+    image_url = Column(String(500))
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
@@ -30,6 +31,7 @@ class SpaceType(Base):
         return {
             'name': self.name,
             'description': self.description,
+            'image_url': self.image_url
         }
 
 class SpaceProject(Base):
@@ -40,6 +42,7 @@ class SpaceProject(Base):
     design_team = Column(String(1000))
     year_built = Column(String(8))
     program = Column(String(250))
+    image_url = Column(String(500))
     space_type = Column(String(250),
                         ForeignKey('spacetype.name'))
     space = relationship(SpaceType)
@@ -54,6 +57,7 @@ class SpaceProject(Base):
             'design_team': self.design_team,
             'year_built': self.year_built,
             'program': self.program,
+            'image_url': self.image_url,
             'space_type': self.space_type
         }
 

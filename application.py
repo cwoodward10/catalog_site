@@ -6,6 +6,7 @@ from userInfo import createUser, getUserInfo, getUserID, createState
 from flask import session as login_session
 import random
 import string
+import os
 
 # IMPORTS FOR THIS STEP
 from oauth2client.client import flow_from_clientsecrets
@@ -21,6 +22,7 @@ app = Flask(__name__)
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Spaces Catalog Application"
+
 
 
 # Connect to Database and create database session
@@ -218,6 +220,7 @@ def createSpaceType():
     if request.method == 'POST':
         newType = SpaceType(name = request.form['name'],
                             description = request.form['description'],
+                            image_url = request.form['image_url'],
                             user_id = login_session['user_id'])
         try:
             session.add(newType)
@@ -247,6 +250,8 @@ def editSpaceType(space_type):
             editted_space.name = request.form['name']
         if request.form['description']:
             editted_space.description = request.form['description']
+        if request.form['image_url']:
+            editted_space.description = request.form['image_url']
         try:
             session.add(editted_space)
             session.commit()
@@ -325,6 +330,7 @@ def createSpaceProject(space_type = None):
                                 design_team  = request.form['design_team'],
                                 year_built = request.form['year_built'],
                                 program = request.form['program'],
+                                image_url = request.form['image_url'],
                                 space_type = request.form['space_type'],
                                 user_id = login_session['user_id']
                                 )
@@ -370,6 +376,8 @@ def editSpaceProject(space_type, space_id):
             editted_proj.year_built = request.form['year_built']
         if request.form['program']:
             editted_proj.program = request.form['program']
+        if request.form['image_url']:
+            editted_proj.image_url = request.form['image_url']
         if request.form['space_type']:
             editted_proj.space_type = request.form['space_type']
             space_type_new = editted_proj.space_type
