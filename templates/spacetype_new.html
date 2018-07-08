@@ -14,24 +14,24 @@
     {% endwith %}
 </div>
 
-<form action="#" method = "post">
+<form action="#" method = "post" class='main'>
   <div class="form-group">
-		<div>
-	    <label for="name">Type of Space:</label>
-	    <input type ="text" maxlength="250" name="name" placeholder="The type of space.">
+		<div class='left one flex'>
+	    <label for="name" class='form-label one-third'>Type of Space:</label>
+	    <input type ="text" maxlength="250" name="name" placeholder="The type of space." class='form-entry two-thirds'>
 		</div>
 
-		<div>
-			<label for="description">Description:</label>
-    	<textarea  maxlength="1000" rows="3" name="description" placeholder="Description of the type of space"></textarea>
+		<div class='left one flex'>
+			<label for="description" class='form-label one-third'>Description:</label>
+    	<textarea  maxlength="1000" rows="3" name="description" placeholder="Description of the type of space" class='form-entry two-thirds'></textarea>
 		</div>
 
-		<div>
-			<label for="image_url">Image URL:</label>
-			<textarea  maxlength="500" rows="3" name="image_url" placeholder="A url for an image of this type of space"></textarea>
+		<div class='left one flex'>
+			<label for="image_url" class='form-label one-third'>Image URL:</label>
+			<textarea  maxlength="500" rows="3" name="image_url" placeholder="A url for an image of this type of space" class='form-entry two-thirds'></textarea>
 		</div>
 
-    <button id="submit" type="submit">
+    <button id="submit" type="submit" class='form-label one-third'>
     <span></span>Create</button>
   </div>
 </form>

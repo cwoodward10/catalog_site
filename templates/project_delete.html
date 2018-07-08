@@ -14,14 +14,16 @@
     {% endwith %}
 </div>
 
-<h2> Are you sure you want to delete {{space_project.name}}? </h2>
+<section class='main'>
+	<h2> Are you sure you want to delete {{space_project.name}}? </h2>
 
-<form action="#" method = 'post'>
-	<button type="submit">Delete</button>
-</form>
+	<form action="#" method = 'post'>
+		<button type="submit">Delete</button>
+	</form>
 
-<a href = '{{url_for('spaceProjectView', space_type=space_project.space_type, space_id=space_project.id)}}'>
-	<button>Cancel</button>
-</a>
+	<a href = '{{url_for('spaceProjectView', space_type=space_project.space_type, space_id=space_project.id)}}'>
+		<button>Cancel</button>
+	</a>
+</section>
 
 {% endblock %}

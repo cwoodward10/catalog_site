@@ -14,14 +14,16 @@
     {% endwith %}
 </div>
 
-<h2> Are you sure you want to delete {{spaceType.name}}? </h2>
+<section class='main'>
+	<h2> Are you sure you want to delete {{spaceType.name}}? </h2>
 
-<form action="#" method = 'post'>
-	<button type="submit">Delete</button>
-</form>
+	<form action="#" method = 'post'>
+		<button type="submit">Delete</button>
+	</form>
 
-<a href = '{{url_for('spaceTypeView', space_type=spaceType.name)}}'>
-	<button>Cancel</button>
-</a>
+	<a href = '{{url_for('spaceTypeView', space_type=spaceType.name)}}'>
+		<button>Cancel</button>
+	</a>
+</section>
 
 {% endblock %}

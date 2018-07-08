@@ -14,36 +14,36 @@
     {% endwith %}
 </div>
 
-<form action="#" method = "POST">
+<form action="#" method = "POST" class='main'>
   <div class="form-group">
-		<div>
-	    <label for="name">Type of Space:</label>
-	    <input type ="text" maxlength="250" name="name" placeholder="{{ project.name }}">
+		<div class='left one flex'>
+	    <label for="name" class='form-label one-third'>Type of Space:</label>
+	    <input type ="text" maxlength="250" name="name" placeholder="{{ project.name }}"class='form-entry two-thirds'>
 		</div>
 
-		<div>
-			<label for="design_team">Design Team:</label>
-    	<textarea  maxlength="1000" rows="3" name="design_team" placeholder="{{ project.design_team }}"></textarea>
+		<div class='left one flex'>
+			<label for="design_team" class='form-label one-third'>Design Team:</label>
+    	<textarea  maxlength="1000" rows="3" name="design_team" placeholder="{{ project.design_team }}"class='form-entry two-thirds'></textarea>
 		</div>
 
-		<div>
-			<label for="year_built">Year Built:</label>
-    	<textarea  maxlength="1000" rows="3" name="year_built" placeholder="{{ project.year_built }}"></textarea>
+		<div class='left one flex'>
+			<label for="year_built" class='form-label one-third'>Year Built:</label>
+    	<textarea  maxlength="1000" rows="3" name="year_built" placeholder="{{ project.year_built }}"class='form-entry two-thirds'></textarea>
 		</div>
 
-		<div>
-			<label for="program">Program:</label>
-    	<textarea  maxlength="1000" rows="3" name="program" placeholder="{{ project.program }}"></textarea>
+		<div class='left one flex'>
+			<label for="program" class='form-label one-third'>Program:</label>
+    	<textarea  maxlength="1000" rows="3" name="program" placeholder="{{ project.program }}"class='form-entry two-thirds'></textarea>
 		</div>
 
-		<div>
-			<label for="image_url">Image URL:</label>
-			<textarea  maxlength="500" rows="3" name="image_url" placeholder="{{ project.image_url }}"></textarea>
+		<div class='left one flex'>
+			<label for="image_url" class='form-label one-third'>Image URL:</label>
+			<textarea  maxlength="500" rows="3" name="image_url" placeholder="{{ project.image_url }}"class='form-entry two-thirds'></textarea>
 		</div>
 
-		<div>
-      <label for="space_type">Space Type:</label>
-      <select name="space_type">
+		<div class='left one flex'>
+      <label for="space_type" class='form-label one-third'>Space Type:</label>
+      <select name="space_type"class='form-entry two-thirds'>
         {% for space in space_types %}
         <option value="{{ space.name }}" {% if space.name == project.space_type %}selected{% endif %}>{{ space.name }}</option>
         {% endfor %}
@@ -51,7 +51,7 @@
     </div>
 
     <button id="submit" type="submit">
-    <span></span>Create</button>
+    <span></span>Edit</button>
   </div>
 </form>
 

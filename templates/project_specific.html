@@ -2,7 +2,7 @@
 {% block content %}
 {% include "header.html" %}
 
-<div>
+<section class='main'>
   <h2>{{ space.name }}</h2>
 
   {% if creator_state == True %}
@@ -13,22 +13,22 @@
   	<a href="{{url_for('deleteSpaceProject', space_type = space.space_type, space_id = space.id)}}">
   		<p>Delete this project</p>
   	</a>
-  {% endif %}
   </div>
+  {% endif %}
 
 	<div>
 		<p>{{ space.design_team }}</p>
-	<div>
+	</div>
 	<div>
 		<p>{{ space.year_built }}</p>
-	<div>
+	</div>
 	<div>
 		<p>{{ space.program }}</p>
-	<div>
+	</div>
 	<div>
 		<p>{{ space.space_type }}</p>
-	<div>
+	</div>
 
-</div>
+</section>
 
 {% endblock %}

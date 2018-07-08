@@ -14,36 +14,36 @@
     {% endwith %}
 </div>
 
-<form action="#" method = "POST">
+<form action="#" method = "POST" class='main'>
   <div class="form-group">
-		<div>
-	    <label for="name">Name Project:</label>
-	    <input type ="text" maxlength="250" name="name" placeholder="The type of space.">
+		<div class='left one flex'>
+	    <label for="name" class='form-label one-third'>Name Project:</label>
+	    <input type ="text" maxlength="250" name="name" placeholder="The type of space."class='form-entry two-thirds'>
 		</div>
 
-    <div>
-      <label for="design_team">Design Team:</label>
-      <textarea  maxlength="1000" rows="3" name="design_team" placeholder="Team that designed the space"></textarea>
+    <div class='left one flex'>
+      <label for="design_team" class='form-label one-third'>Design Team:</label>
+      <textarea  maxlength="1000" rows="3" name="design_team" placeholder="Team that designed the space"class='form-entry two-thirds'></textarea>
     </div>
 
-    <div>
-      <label for="year_built">Year Built:</label>
-      <textarea  maxlength="8" rows="3" name="year_built" placeholder="The year that the space was build in"></textarea>
+    <div class='left one flex'>
+      <label for="year_built" class='form-label one-third'>Year Built:</label>
+      <textarea  maxlength="8" rows="3" name="year_built" placeholder="The year that the space was build in"class='form-entry two-thirds'></textarea>
     </div>
 
-    <div>
-      <label for="program">Program:</label>
-      <textarea  maxlength="250" rows="3" name="program" placeholder="The program of the space"></textarea>
+    <div class='left one flex'>
+      <label for="program" class='form-label one-third'>Program:</label>
+      <textarea  maxlength="250" rows="3" name="program" placeholder="The program of the space"class='form-entry two-thirds'></textarea>
     </div>
 
-		<div>
-      <label for="image_url">Image URL:</label>
-      <textarea  maxlength="500" rows="3" name="image_url" placeholder="A url for an image of the space"></textarea>
+		<div class='left one flex'>
+      <label for="image_url" class='form-label one-third'>Image URL:</label>
+      <textarea  maxlength="500" rows="3" name="image_url" placeholder="A url for an image of the space"class='form-entry two-thirds'></textarea>
     </div>
 
-    <div>
-      <label for="space_type">Space Type:</label>
-      <select name="space_type">
+    <div class='left one flex'>
+      <label for="space_type" class='form-label one-third'>Space Type:</label>
+      <select name="space_type"class='form-entry two-thirds'>
 			{% if space != None %}
         {% for space_type in space_types %}
         <option value="{{ space_type.name }}" {% if space_type.name == space.name %}selected{% endif %}>{{ space_type.name }}</option>
