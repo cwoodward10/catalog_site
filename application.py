@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+from flask import Flask, render_template, request, redirect
+from flask import jsonify, url_for, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from models import Base, User, SpaceType, SpaceProject
@@ -23,18 +24,17 @@ CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Spaces Catalog Application"
 
-
-
 # Connect to Database and create database session
 # Allow multi-threading
 engine = create_engine('sqlite:///catalog_db.db',
-                        connect_args={'check_same_thread':False})
+                       connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-############################  VIEWS GO HERE ##########################################
+############################  VIEWS GO HERE ###################################
+
 
 @app.route('/')
 @app.route('/spaces/')
@@ -45,14 +45,16 @@ def spacesIndex():
     else:
         login_state = True
     return render_template('index.html',
-                            space_types = space_types,
-                            login_state = login_state)
+                           space_types=space_types,
+                           login_state=login_state)
+
 
 @app.route('/spaces/login')
 def spacesLogin():
     state = createState()
     login_session['state'] = state
-    return render_template('login.html', state = state)
+    return render_template('login.html', state=state)
+
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -142,6 +144,7 @@ def gconnect():
     print("done!")
     return output
 
+
 @app.route('/logout')
 def gdisconnect():
     access_token = login_session.get('access_token')
@@ -169,17 +172,15 @@ def gdisconnect():
         del login_session['picture']
         output = ''
         output += 'Successfully disconnected.'
-        output += "<a href='/space/'>Go Back</a>"
-        response = make_response(json.dumps(output), 200)
-        response.headers['Content-Type'] = 'application/json'
-        return response
+        output += "<a href='/spaces/'>Go Back</a>"
+        return output
     else:
         output = ''
         output += 'Failed to revoke token for given user.'
-        output += "<a href='/space/'>Go Back</a>"
         response = make_response(json.dumps(output, 400))
         response.headers['Content-Type'] = 'application/json'
         return response
+
 
 @app.route('/spaces/all')
 def allSpaces():
@@ -189,14 +190,14 @@ def allSpaces():
     else:
         login_state = True
     return render_template('spacetype_all.html',
-                            spaces = spaces,
-                            login_state = login_state)
+                           spaces=spaces,
+                           login_state=login_state)
+
 
 @app.route('/spaces/<string:space_type>')
 def spaceTypeView(space_type):
-    spaces = session.query(SpaceProject).filter_by(space_type =
-                                                    space_type).all()
-    spaceType = session.query(SpaceType).filter_by(name = space_type).one()
+    spaces = session.query(SpaceProject).filter_by(space_type=space_type).all()
+    spaceType = session.query(SpaceType).filter_by(name=space_type).one()
     creator = getUserInfo(spaceType.user_id)
     if 'username' not in login_session:
         creator_state = False
@@ -208,38 +209,40 @@ def spaceTypeView(space_type):
         login_state = True
         creator_state = True
     return render_template('spacetype_specific.html',
-                            spaces = spaces,
-                            spaceType = spaceType,
-                            creator_state = creator_state,
-                            login_state = login_state)
+                           spaces=spaces,
+                           spaceType=spaceType,
+                           creator_state=creator_state,
+                           login_state=login_state)
 
-@app.route('/spaces/create', methods = ['GET', 'POST'])
+
+@app.route('/spaces/create', methods=['GET', 'POST'])
 def createSpaceType():
     if 'username' not in login_session:
         return redirect(url_for('spacesLogin'))
     if request.method == 'POST':
-        newType = SpaceType(name = request.form['name'],
-                            description = request.form['description'],
-                            image_url = request.form['image_url'],
-                            user_id = login_session['user_id'])
+        newType = SpaceType(name=request.form['name'],
+                            description=request.form['description'],
+                            image_url=request.form['image_url'],
+                            user_id=login_session['user_id'])
         try:
             session.add(newType)
             session.commit()
             flash('New type of space named {} created'.format(newType.name))
-            return redirect(url_for('spacesIndex', login_state = True))
+            return redirect(url_for('spacesIndex', login_state=True))
         except:
             session.rollback()
             flash('Failed to create a new type of space.')
-            return render_template('spacetype_new.html', login_state = True)
+            return render_template('spacetype_new.html', login_state=True)
 
     else:
         return render_template('spacetype_new.html')
+
 
 @app.route('/spaces/<string:space_type>/edit', methods=['GET', 'POST'])
 def editSpaceType(space_type):
     if 'username' not in login_session:
         return redirect(url_for('spacesLogin'))
-    editted_space = session.query(SpaceType).filter_by(name = space_type).one()
+    editted_space = session.query(SpaceType).filter_by(name=space_type).one()
     if editted_space.user_id != login_session['user_id']:
         return '''<script> function myFuction() {alert('You are not authorized
                 to edit this type of space. Please create your own type in
@@ -251,30 +254,31 @@ def editSpaceType(space_type):
         if request.form['description']:
             editted_space.description = request.form['description']
         if request.form['image_url']:
-            editted_space.description = request.form['image_url']
+            editted_space.image_url = request.form['image_url']
         try:
             session.add(editted_space)
             session.commit()
             flash('Success: {} has been editted'.format(editted_space.name))
             return redirect(url_for('spaceTypeView',
-                                    space_type = space_type,
-                                    login_state = True))
+                                    space_type=space_type,
+                                    login_state=True))
         except:
             session.rollback()
             flash('Failed to create a new type of space.')
             return render_template('spacetype_edit.html',
-                                    space = editted_space,
-                                    login_state = True)
+                                   space=editted_space,
+                                   login_state=True)
     else:
         return render_template('spacetype_edit.html',
-                                space = editted_space,
-                                login_state = True)
+                               space=editted_space,
+                               login_state=True)
+
 
 @app.route('/spaces/<string:space_type>/delete', methods=['GET', 'POST'])
 def deleteSpaceType(space_type):
     if 'username' not in login_session:
         return redirect(url_for('spacesLogin'))
-    deleted_space = session.query(SpaceType).filter_by(name = space_type).one()
+    deleted_space = session.query(SpaceType).filter_by(name=space_type).one()
     if deleted_space.user_id != login_session['user_id']:
         return '''<script> function myFuction() {alert('You are not authorized
                 to delete this type of space. Please create your own type in
@@ -286,21 +290,22 @@ def deleteSpaceType(space_type):
             name = deleted_space.name
             session.commit()
             flash('Successfully deleted {}'.format(name))
-            return redirect(url_for('spacesIndex', login_state = True))
+            return redirect(url_for('spacesIndex', login_state=True))
         except:
             session.rollback()
             flash('There was a problem in deleting the project')
             return render_template('spacetype_delete.html',
-                                    spaceType = deleted_space,
-                                    login_state = True)
+                                   spaceType=deleted_space,
+                                   login_state=True)
     else:
         return render_template('spacetype_delete.html',
-                                spaceType = deleted_space,
-                                login_state = True)
+                               spaceType=deleted_space,
+                               login_state=True)
+
 
 @app.route('/spaces/<string:space_type>/<int:space_id>/')
 def spaceProjectView(space_id, space_type):
-    space = session.query(SpaceProject).filter_by(id = space_id).one()
+    space = session.query(SpaceProject).filter_by(id=space_id).one()
     creator = getUserInfo(space.user_id)
     if 'username' not in login_session:
         creator_state = False
@@ -311,56 +316,59 @@ def spaceProjectView(space_id, space_type):
     else:
         creator_state = True
         login_state = True
-    return render_template('project_specific.html', space = space,
-                                                creator_state = creator_state,
-                                                login_state = login_state)
+    return render_template('project_specific.html',
+                           space=space,
+                           creator_state=creator_state,
+                           login_state=login_state)
 
-@app.route('/spaces/all/create', methods = ['GET', 'POST'])
-@app.route('/spaces/<string:space_type>/create', methods = ['GET', 'POST'])
-def createSpaceProject(space_type = None):
-        if space_type != None:
-            space = session.query(SpaceType).filter_by(name = space_type).one()
+
+@app.route('/spaces/all/create', methods=['GET', 'POST'])
+@app.route('/spaces/<string:space_type>/create', methods=['GET', 'POST'])
+def createSpaceProject(space_type=None):
+        if space_type is not None:
+            space = session.query(SpaceType).filter_by(name=space_type).one()
         else:
             space = None
         if 'username' not in login_session:
             return redirect(url_for('spacesLogin'))
         space_types = session.query(SpaceType).all()
         if request.method == 'POST':
-            newProject = SpaceProject(name = request.form['name'],
-                                design_team  = request.form['design_team'],
-                                year_built = request.form['year_built'],
-                                program = request.form['program'],
-                                image_url = request.form['image_url'],
-                                space_type = request.form['space_type'],
-                                user_id = login_session['user_id']
-                                )
+            newProject = SpaceProject(name=request.form['name'],
+                                      design_team=request.form['design_team'],
+                                      year_built=request.form['year_built'],
+                                      program=request.form['program'],
+                                      image_url=request.form['image_url'],
+                                      space_type=request.form['space_type'],
+                                      user_id=login_session['user_id']
+                                      )
             try:
                 session.add(newProject)
                 session.commit()
                 flash('New type of project named {} was created'.format(newProject.name))
                 return redirect(url_for('spaceTypeView',
-                                        space_type = newProject.space_type,
-                                        login_state = True))
+                                        space_type=newProject.space_type,
+                                        login_state=True))
             except:
                 session.rollback()
                 flash('Failed to create a new project.')
                 return render_template('project_new.html',
-                                        space_types = space_types,
-                                        space = space,
-                                        login_state = True)
+                                       space_types=space_types,
+                                       space=space,
+                                       login_state=True)
 
         else:
             return render_template('project_new.html',
-                                    space_types = space_types,
-                                    space = space,
-                                    login_state = True)
+                                   space_types=space_types,
+                                   space=space,
+                                   login_state=True)
 
-@app.route('/spaces/<string:space_type>/<string:space_id>/edit'
-            , methods=['GET', 'POST'])
+
+@app.route('/spaces/<string:space_type>/<string:space_id>/edit',
+           methods=['GET', 'POST'])
 def editSpaceProject(space_type, space_id):
     if 'username' not in login_session:
         return redirect(url_for('spacesLogin'))
-    editted_proj = session.query(SpaceProject).filter_by(id = space_id).one()
+    editted_proj = session.query(SpaceProject).filter_by(id=space_id).one()
     space_types = session.query(SpaceType).order_by(asc(SpaceType.name)).all()
     if editted_proj.user_id != login_session['user_id']:
         return '''<script> function myFuction() {alert('You are not authorized
@@ -387,28 +395,29 @@ def editSpaceProject(space_type, space_id):
             session.commit()
             flash('Success: {} has been editted'.format(editted_proj.name))
             return redirect(url_for('spaceProjectView',
-                                    space_type = space_type,
-                                    space_id = space_id,
-                                    login_state = True))
+                                    space_type=space_type,
+                                    space_id=space_id,
+                                    login_state=True))
         except:
             session.rollback()
             flash('Failed to create a new type of space.')
             return render_template('project_edit.html',
-                                    project = editted_proj,
-                                    space_types = space_types,
-                                    login_state = True)
+                                   project=editted_proj,
+                                   space_types=space_types,
+                                   login_state=True)
     else:
         return render_template('project_edit.html',
-                                project = editted_proj,
-                                space_types = space_types,
-                                login_state = True)
+                               project=editted_proj,
+                               space_types=space_types,
+                               login_state=True)
 
-@app.route('/spaces/<string:space_type>/<string:space_id>/delete'
-            , methods=['GET', 'POST'])
+
+@app.route('/spaces/<string:space_type>/<string:space_id>/delete',
+           methods=['GET', 'POST'])
 def deleteSpaceProject(space_type, space_id):
     if 'username' not in login_session:
         return redirect(url_for('spacesLogin'))
-    deleted_proj = session.query(SpaceProject).filter_by(id = space_id).one()
+    deleted_proj = session.query(SpaceProject).filter_by(id=space_id).one()
     if deleted_proj.user_id != login_session['user_id']:
         return '''<script> function myFuction() {alert('You are not authorized
                 to delete this project. Please create your own project in
@@ -421,18 +430,32 @@ def deleteSpaceProject(space_type, space_id):
             session.commit()
             flash('Successfully deleted {}'.format(name))
             return redirect(url_for('spaceTypeView',
-                                    space_type = space_type,
-                                    login_state = True))
+                                    space_type=space_type,
+                                    login_stat=True))
         except:
             session.rollback()
             flash('There was a problem in deleting the project')
             return render_template('project_delete.html',
-                                    space_project = deleted_proj,
-                                    login_state = True)
+                                   space_project=deleted_proj,
+                                   login_state=True)
         else:
             return render_template('project_delete.html',
-                                    space_project = deleted_proj,
-                                    login_state = True)
+                                   space_project=deleted_proj,
+                                   login_state=True)
+
+#####################  API ENDPOINTS GO HERE ####################################
+
+
+@app.route('/spaces/<string:space_type>/JSON')
+def spaceTypeJSON(space_type):
+    space_type = session.query(SpaceType).filter_by(name=space_type).one()
+    return jsonify(Space_Type=space_type.serialize)
+
+
+@app.route('/spaces/<string:space_type>/<int:space_id>/JSON')
+def spaceProjectJSON(space_type, space_id):
+    space = session.query(SpaceProject).filter_by(id=space_id).one()
+    return jsonify(Space=space.serialize)
 
 ############################  INITIATE ##########################################
 

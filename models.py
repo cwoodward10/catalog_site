@@ -5,21 +5,23 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = 'user'
 
-    id = Column(Integer, primary_key = True)
-    name = Column(String(250), nullable = False)
-    email = Column(String(250), nullable = False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
     picture = Column(String(250))
+
 
 class SpaceType(Base):
     __tablename__ = 'spacetype'
 
     name = Column(String(250),
-                    nullable = False,
-                    unique = True,
-                    primary_key = True)
+                  nullable=False,
+                  unique=True,
+                  primary_key=True)
     description = Column(String(1000))
     image_url = Column(String(500))
     user_id = Column(Integer, ForeignKey('user.id'))
@@ -34,11 +36,12 @@ class SpaceType(Base):
             'image_url': self.image_url
         }
 
+
 class SpaceProject(Base):
     __tablename__ = 'space'
 
-    id = Column(Integer, primary_key = True)
-    name = Column(String(250), nullable = False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
     design_team = Column(String(1000))
     year_built = Column(String(8))
     program = Column(String(250))
