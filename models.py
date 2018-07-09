@@ -7,6 +7,7 @@ Base = declarative_base()
 
 
 class User(Base):
+    ''' Creates a table that stores a user's information '''
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -16,6 +17,7 @@ class User(Base):
 
 
 class SpaceType(Base):
+    ''' Creates a table that stores a space type's information '''
     __tablename__ = 'spacetype'
 
     name = Column(String(250),
@@ -33,14 +35,18 @@ class SpaceType(Base):
         return {
             'name': self.name,
             'description': self.description,
-            'image_url': self.image_url
+            'image_url': self.image_url,
+            'user_id': self.user_id
         }
 
 
 class SpaceProject(Base):
+        ''' Creates a table that stores a project's information '''
     __tablename__ = 'space'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer,
+                primary_key=True,
+                unique=True)
     name = Column(String(250), nullable=False)
     design_team = Column(String(1000))
     year_built = Column(String(8))
@@ -61,7 +67,8 @@ class SpaceProject(Base):
             'year_built': self.year_built,
             'program': self.program,
             'image_url': self.image_url,
-            'space_type': self.space_type
+            'space_type': self.space_type,
+            'user_id': self.user_id
         }
 
 

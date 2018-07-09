@@ -6,6 +6,7 @@ from models import Base, User, SpaceType, SpaceProject
 from flask import session as login_session
 import random
 import string
+from functools import wraps
 
 
 # Connect to Database and create database session
@@ -19,12 +20,14 @@ session = DBSession()
 
 
 def createState():
+    ''' Creates an object random letters/numbers to help with login '''
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
     return state
 
 
 def createUser(login_session):
+    ''' Creates a new user for the site when called '''
     newUser = User(name=login_session['username'],
                    email=login_session['email'],
                    picture=login_session['picture'])
@@ -35,13 +38,26 @@ def createUser(login_session):
 
 
 def getUserInfo(user_id):
+    ''' Gathers a particular user's information '''
     user = session.query(User).filter_by(id=user_id).one()
     return user
 
 
 def getUserID(email):
-    try:
-        user = session.query(User).filter_by(email=email).one()
-        return user.id
-    except:
-        return None
+    ''' Gathers a particular user's email ''''
+    user = session.query(User).filter_by(email=email).one_or_none()
+    return user.id
+
+
+def login_required(f):
+    ''' Wrapper function for areas of the site that require login '''
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # If a user is logged in, return the view being visited
+        if 'username' in login_session:
+            return f(*args, **kwargs)
+        # If user is not logged in, return the view for the login page
+        else:
+            flash('Please login to have access here')
+            return redirect(url_for('spacesLogin'))
+    return decorated_function

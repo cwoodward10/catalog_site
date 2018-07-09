@@ -17,13 +17,25 @@
 
 <h2 class='main flex one center'>Login with Google below</h2>
 
+<div class = 'flash one center'>
+		  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <p> <strong> {{ message }} </strong> </p>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+
 <!-- GOOGLE PLUS SIGN IN-->
 
 
           <div id="signinButton" class='center one-third'>
           <span class="g-signin"
             data-scope="openid email"
-            data-clientid="151717624719-hgqmi56nrg7uqhjqqdpqauuiqim7i0da.apps.googleusercontent.com"
+            data-clientid="{{CLIENT_ID}}"
             data-redirecturi="postmessage"
             data-accesstype="offline"
             data-cookiepolicy="single_host_origin"
