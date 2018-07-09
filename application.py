@@ -330,40 +330,40 @@ def spaceProjectView(space_id, space_type):
 @login_required
 def createSpaceProject(space_type=None):
     ''' Creates a view that allows a user to create a new project. '''
-        if space_type is not None:
-            space = session.query(SpaceType).filter_by(name=space_type).one_or_none()
-        else:
-            space = None
-        space_types = session.query(SpaceType).all()
-        if request.method == 'POST':
-            newProject = SpaceProject(name=request.form['name'],
-                                      design_team=request.form['design_team'],
-                                      year_built=request.form['year_built'],
-                                      program=request.form['program'],
-                                      image_url=request.form['image_url'],
-                                      space_type=request.form['space_type'],
-                                      user_id=login_session['user_id']
-                                      )
-            try:
-                session.add(newProject)
-                session.commit()
-                flash('New type of project named {} was created'.format(newProject.name))
-                return redirect(url_for('spaceTypeView',
-                                        space_type=newProject.space_type,
-                                        login_state=True))
-            except exc.IntegrityError:
-                session.rollback()
-                flash('Failed to create a new project.')
-                return render_template('project_new.html',
-                                       space_types=space_types,
-                                       space=space,
-                                       login_state=True)
-
-        else:
+    if space_type is not None:
+        space = session.query(SpaceType).filter_by(name=space_type).one_or_none()
+    else:
+        space = None
+    space_types = session.query(SpaceType).all()
+    if request.method == 'POST':
+        newProject = SpaceProject(name=request.form['name'],
+                                  design_team=request.form['design_team'],
+                                  year_built=request.form['year_built'],
+                                  program=request.form['program'],
+                                  image_url=request.form['image_url'],
+                                  space_type=request.form['space_type'],
+                                  user_id=login_session['user_id']
+                                  )
+        try:
+            session.add(newProject)
+            session.commit()
+            flash('New type of project named {} was created'.format(newProject.name))
+            return redirect(url_for('spaceTypeView',
+                                    space_type=newProject.space_type,
+                                    login_state=True))
+        except exc.IntegrityError:
+            session.rollback()
+            flash('Failed to create a new project.')
             return render_template('project_new.html',
                                    space_types=space_types,
                                    space=space,
                                    login_state=True)
+
+    else:
+        return render_template('project_new.html',
+                               space_types=space_types,
+                               space=space,
+                               login_state=True)
 
 
 @app.route('/spaces/<string:space_type>/<string:space_id>/edit',

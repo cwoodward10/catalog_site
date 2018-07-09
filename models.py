@@ -41,7 +41,7 @@ class SpaceType(Base):
 
 
 class SpaceProject(Base):
-        ''' Creates a table that stores a project's information '''
+    ''' Creates a table that stores a project's information '''
     __tablename__ = 'space'
 
     id = Column(Integer,
