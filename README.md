@@ -5,7 +5,8 @@
 1) Have python3 installed  
 2) Have the flask, sqlalchemy, and requests packages installed  
 3) There is a database included by default with some information populated.  
-If you want to start with a fresh database file, run models.py within the project directory
+If you want to start with a fresh database file, run models.py within the project directory  
+4) You may need to get a client_secret.json file from the Google Developer Console
 
 
 ##### To Use:
