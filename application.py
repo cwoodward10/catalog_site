@@ -83,7 +83,7 @@ def gconnect():
 
     # Check that the access token is valid.
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={}'.format(access_token))
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={}'.format(access_token))  # noqa
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1].decode())
     # If there was an error in the access token info, abort.
@@ -111,8 +111,8 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(
+                   json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -142,7 +142,7 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '    # noqa
     flash("you are now logged in as {}".format(login_session['username']))
     print("done!")
     return output
@@ -162,7 +162,7 @@ def gdisconnect():
     print('In gdisconnect access token is {}'.format(access_token))
     print('User name is: ')
     print(login_session['username'])
-    url = 'https://accounts.google.com/o/oauth2/revoke?token={}'.format(login_session['access_token'])
+    url = 'https://accounts.google.com/o/oauth2/revoke?token={}'.format(login_session['access_token'])    # noqa
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print('result is ')
@@ -200,7 +200,8 @@ def allSpaces():
 @app.route('/spaces/<string:space_type>')
 def spaceTypeView(space_type):
     spaces = session.query(SpaceProject).filter_by(space_type=space_type).all()
-    spaceType = session.query(SpaceType).filter_by(name=space_type).one_or_none()
+    spaceType = session.query(SpaceType).filter_by(
+                name=space_type).one_or_none()
     creator = getUserInfo(spaceType.user_id)
     if 'username' not in login_session:
         creator_state = False
@@ -245,8 +246,9 @@ def createSpaceType():
 @app.route('/spaces/<string:space_type>/edit', methods=['GET', 'POST'])
 @login_required
 def editSpaceType(space_type):
-    ''' Creates a view that allows a user to edit a space type's information '''
-    editted_space = session.query(SpaceType).filter_by(name=space_type).one_or_none()
+    '''Creates a view that allows a user to edit a space type's information'''
+    editted_space = session.query(SpaceType).filter_by(
+                    name=space_type).one_or_none()
     if editted_space.user_id != login_session['user_id']:
         return '''<script> function myFuction() {alert('You are not authorized
                 to edit this type of space. Please create your own type in
@@ -281,7 +283,8 @@ def editSpaceType(space_type):
 @login_required
 def deleteSpaceType(space_type):
     ''' Creates a view for confirming the deletion of a space type '''
-    deleted_space = session.query(SpaceType).filter_by(name=space_type).one_or_none()
+    deleted_space = session.query(SpaceType).filter_by(
+                    name=space_type).one_or_none()
     if deleted_space.user_id != login_session['user_id']:
         return '''<script> function myFuction() {alert('You are not authorized
                 to delete this type of space. Please create your own type in
@@ -331,7 +334,8 @@ def spaceProjectView(space_id, space_type):
 def createSpaceProject(space_type=None):
     ''' Creates a view that allows a user to create a new project. '''
     if space_type is not None:
-        space = session.query(SpaceType).filter_by(name=space_type).one_or_none()
+        space = session.query(SpaceType).filter_by(
+                name=space_type).one_or_none()
     else:
         space = None
     space_types = session.query(SpaceType).all()
@@ -347,7 +351,7 @@ def createSpaceProject(space_type=None):
         try:
             session.add(newProject)
             session.commit()
-            flash('New type of project named {} was created'.format(newProject.name))
+            flash('New type of project named {} was created'.format(newProject.name))  # noqa
             return redirect(url_for('spaceTypeView',
                                     space_type=newProject.space_type,
                                     login_state=True))
@@ -371,7 +375,8 @@ def createSpaceProject(space_type=None):
 @login_required
 def editSpaceProject(space_type, space_id):
     ''' Creates a view that allows a user to edit a project's information '''
-    editted_proj = session.query(SpaceProject).filter_by(id=space_id).one_or_none()
+    editted_proj = session.query(SpaceProject).filter_by(
+                   id=space_id).one_or_none()
     space_types = session.query(SpaceType).order_by(asc(SpaceType.name)).all()
     if editted_proj.user_id != login_session['user_id']:
         return '''<script> function myFuction() {alert('You are not authorized
@@ -420,7 +425,8 @@ def editSpaceProject(space_type, space_id):
 @login_required
 def deleteSpaceProject(space_type, space_id):
     ''' Creates a view for confirming the deletion of a project '''
-    deleted_proj = session.query(SpaceProject).filter_by(id=space_id).one_or_none()
+    deleted_proj = session.query(SpaceProject).filter_by(
+                   id=space_id).one_or_none()
     if deleted_proj.user_id != login_session['user_id']:
         return '''<script> function myFuction() {alert('You are not authorized
                 to delete this project. Please create your own project in
@@ -452,7 +458,8 @@ def deleteSpaceProject(space_type, space_id):
 
 @app.route('/spaces/<string:space_type>/JSON')
 def spaceTypeJSON(space_type):
-    space_type = session.query(SpaceType).filter_by(name=space_type).one_or_none()
+    space_type = session.query(SpaceType).filter_by(
+                 name=space_type).one_or_none()
     return jsonify(Space_Type=space_type.serialize)
 
 
