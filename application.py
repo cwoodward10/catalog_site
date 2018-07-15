@@ -61,6 +61,7 @@ def spacesLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    ''' Handles the login validation from Google Login API '''
     # Note:I took this from the Udacity Code
     # Validate state token
     if request.args.get('state') != login_session['state']:

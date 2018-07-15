@@ -45,9 +45,12 @@ def getUserInfo(user_id):
 
 def getUserID(email):
     ''' Gathers a particular user's email '''
-    
+
     user = session.query(User).filter_by(email=email).one_or_none()
-    return user.id
+    if user:
+        return user.id
+    else:
+        return none
 
 
 def login_required(f):
