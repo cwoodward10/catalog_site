@@ -72,5 +72,5 @@ class SpaceProject(Base):
         }
 
 
-engine = create_engine('sqlite:///catalog_db.db')
+engine = create_engine('postgresql://catalog.db')
 Base.metadata.create_all(engine)
