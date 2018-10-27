@@ -22,9 +22,10 @@ import requests
 
 app = Flask(__name__)
 
+APP_PATH = '/var/www/catalog_site/catalog_site/'
 
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open(APP_PATH + 'client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Spaces Catalog Application"
 
 # Connect to Database and create database session
