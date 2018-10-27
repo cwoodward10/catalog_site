@@ -30,8 +30,7 @@ APPLICATION_NAME = "Spaces Catalog Application"
 
 # Connect to Database and create database session
 # Allow multi-threading
-engine = create_engine('postgresql://catalog:catalogHere@localhost/catalog',
-                       connect_args={'check_same_thread': False})
+engine = create_engine('postgresql://catalog:catalogHere@localhost/catalog')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
